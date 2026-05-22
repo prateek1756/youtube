@@ -1,0 +1,30 @@
+# Render deployment configuration
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  # ─── Backend API (Express + yt-dlp + FFmpeg) ──────────────────────────────
+  - type: web
+    name: ytgrab-backend
+    runtime: docker
+    # Render looks for Dockerfile in the specified directory
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    plan: free          # Change to "starter" for no sleep after inactivity
+    region: oregon      # Closest to most users; change to "frankfurt" for EU
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: CORS_ORIGIN
+        # Replace with your actual Vercel frontend URL after deployment
+        value: https://your-frontend.vercel.app
+      - key: TEMP_DIR
+        value: /tmp/ytgrab-downloads
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX
+        value: 100
+      - key: DOWNLOAD_RATE_LIMIT_MAX
+        value: 10

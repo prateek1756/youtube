@@ -1,0 +1,16 @@
+# Railway configuration
+# Docs: https://docs.railway.app/reference/config-as-code
+
+[build]
+# Use our Dockerfile for the build
+dockerfile = "Dockerfile"
+
+[deploy]
+# Start command (also set in Dockerfile CMD, this is a fallback)
+startCommand = "node server.js"
+# Health check path
+healthcheckPath = "/health"
+healthcheckTimeout = 30
+# Restart on failure
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
